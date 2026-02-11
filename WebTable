@@ -1,0 +1,155 @@
+CREATE DATABASE WEBSHOPevgeni
+USE WEBSHOPevgeni;
+--tabel Categories
+CREATE TABLE Categories(
+Category_id int PRIMARY KEY identity(1,1),
+category_name varchar(30) unique);
+INSERT INTO Categories(category_name)
+VALUES ('Hoodie'), ('Shirt'), ('HAT'), ('glasses');
+SELECT * FROM Categories;
+--tabel products
+CREATE TABLE products(
+product_id int PRIMARY KEY identity(1,1),
+product_name varchar (50) NOT NULL,
+brand_id int,
+category_id int,
+FOREIGN KEY (category_id) references categories(category_id),
+model_year int,
+list_price decimal(7,2));
+ 
+--tabel brands
+CREATE TABLE Brands(
+brand_id int PRIMARY KEY identity(1,1),
+brand_name varchar (30) unique);
+INSERT INTO Brands(brand_name)
+values ('Alyx'), ('MM6'), ('Nike'), ('Rick Owens')
+SELECT * from Categories;
+ALTER TABLE products ADD CONSTRAINT fk_brand
+FOREIGN KEY (brand_id) references brands(brand_id);
+ 
+--tabel stocks 
+CREATE TABLE stocks(
+store_id int,
+product_id int,
+quantity int,
+PRIMARY KEY (store_id, product_id),
+foreign key (product_id) references products(product_id));
+ 
+-- table stores
+CREATE TABLE Stores(
+    store_id int IDENTITY(1,1) PRIMARY KEY,
+    store_name varchar(30) NOT NULL UNIQUE,
+    phone varchar(20),
+    email varchar(100),
+    street varchar(100),
+    city varchar(50),
+    state_ varchar(50),
+    zip_code varchar(10)
+);
+ --table customers
+    CREATE TABLE Customers(
+    customer_id int PRIMARY KEY identity(1,1),
+    first_name varchar(50),
+    last_name varchar(50),
+    phone varchar(20),
+    email varchar(100),
+    street varchar(100),
+    city varchar(50),
+    state varchar(50),
+    zip_code varchar(10));
+--table staffs
+CREATE TABLE Staffs(
+    staff_id int PRIMARY KEY identity(1,1),
+    first_name varchar(50),
+    last_name varchar(50),
+    email varchar(100),
+    phone varchar(20),
+    active bit,
+    store_id int,
+    manager_id int,
+ 
+    FOREIGN KEY (store_id) REFERENCES Stores(store_id),
+    FOREIGN KEY (manager_id) REFERENCES Staffs(staff_id));
+-- table orders
+CREATE TABLE Orders(
+    order_id int PRIMARY KEY identity(1,1),
+    customer_id int,
+    order_status int,
+    order_date date,
+    required_date date,
+    shipped_date date,
+    store_id int,
+    staff_id int,
+ 
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id),
+    FOREIGN KEY (store_id) REFERENCES Stores(store_id),
+    FOREIGN KEY (staff_id) REFERENCES Staffs(staff_id));
+-- table order_items
+CREATE TABLE Order_Items(
+    order_id int,
+    item_id int,
+    product_id int,
+    quantity int,
+    list_price decimal(7,2),
+    discount decimal(4,2),
+ 
+    PRIMARY KEY (order_id, item_id),
+ 
+    FOREIGN KEY (order_id) REFERENCES Orders(order_id),
+    FOREIGN KEY (product_id) REFERENCES Products(product_id));
+
+	INSERT INTO products
+	(product_id, brand_id, category_id, model_year, list_price)
+	VALUES ('shirt', 1, 1, 2020, 25.20);
+
+	SELECT * from products;
+	SELECT * from Categories;
+	SELECT * from Brands;
+	update Categories SET category_name='kingad'
+	WHERE Category_id=2;
+	--procedure mis liisab INSERT andmeid tabelisse brands
+	CREATE PROCEDURE lisabrand
+	@brand_nimi varchar(30)
+	as
+	begin 
+	insert into Brands(brand_name) values (@brand_nimi);
+	select * from Brands;
+	END
+	-- procedure käivitus
+	EXEC lisabrand 'volvo';
+
+	--procedure mis kustutab DELETE tabelist id järgi
+	CREATE PROCEDURE kustutaBrand
+	@id int
+	as
+	begin
+	select * from Brands;
+	delete from Brands where brand_id=@id;
+	select * from Brands;
+	end;
+	--kutse
+	EXEC kustutaBrand 5;
+	EXEC kustutaBrand @id=5;
+	--procedure mis otsib brandinimed 1 tähte järgi
+	create procedure otsingltahte
+	@taht char (1)
+	as
+	begin
+	select * from Brands where brand_name LIKE @taht+'%'
+	END;
+	--kutse
+	EXEC otsingltahte 'A';
+
+	--procedure mis uuendab UPDATE brandinimi id järgi 
+	CREATE PROCEDURE uuendaBrand
+	@id int,
+	@uus_brandiNimi varchar(30)
+	as
+	begin
+	select * from Brands;
+	UPDATE Brands set brand_name=@uus_brandiNimi
+	where brand_id=@id;
+	select * from Brands;
+	end;
+	--kutse 
+	exec uuendaBrand 2, 'uusApollo';
