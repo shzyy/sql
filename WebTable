@@ -153,3 +153,52 @@ CREATE TABLE Order_Items(
 	end;
 	--kutse 
 	exec uuendaBrand 2, 'uusApollo';
+
+---
+  
+iseseisvalt:
+	tabel categories - loo protseduurid ,illega saab lisada uuendada kutsutada
+
+	--procedure mis lisab INSERT andmeid tabelisse Categories
+   CREATE PROCEDURE lisaCategory
+   @category_nimi varchar(30)
+   as
+   begin 
+   insert into Categories(category_name) values (@category_nimi);
+   select * from Categories;
+   END
+
+   -- procedure käivitus
+   EXEC lisaCategory 'Pants';
+
+
+   --procedure mis kustutab DELETE tabelist id järgi
+   CREATE PROCEDURE kustutaCategory
+   @id int
+   as
+   begin
+   select * from Categories;
+   delete from Categories where category_id=@id;
+   select * from Categories;
+   end;
+
+   --kutse
+   EXEC kustutaCategory 3;
+   EXEC kustutaCategory @id=3;
+
+
+   --procedure mis uuendab UPDATE category_nimi id järgi 
+   CREATE PROCEDURE uuendaCategory
+   @id int,
+   @uus_categoryNimi varchar(30)
+   as
+   begin
+   select * from Categories;
+   UPDATE Categories set category_name=@uus_categoryNimi
+   where category_id=@id;
+   select * from Categories;
+   end;
+
+   --kutse 
+   exec uuendaCategory 2, 'Shoes';
+    EXEC kustutaCategory 3;
