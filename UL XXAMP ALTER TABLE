@@ -61,10 +61,10 @@ CREATE TABLE `kaup` (
 
 INSERT INTO `kaup` (`kauba_kood`, `nimetus`, `liigi_kood`, `hind`) VALUES
 (331, 'Piim', 1, 1.60),
-(332, 'Juust', 1, 2.00),
+(332, 'kohuke', 1, 2.00),
 (333, 'leib', 2, 1.20),
 (334, 'Vesi', 3, 0.50),
-(335, 'Šokolaad', 4, 2.00);
+(335, 'hapukoor', 4, 2.00);
 
 -- --------------------------------------------------------
 
