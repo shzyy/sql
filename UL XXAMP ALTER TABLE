@@ -122,26 +122,26 @@ ALTER TABLE `customer`
   ADD PRIMARY KEY (`idCustomer`);
 
 --
--- Indeksid tabelile `kaup`
+-- Indeksid tabelile `Product `
 --
 ALTER TABLE `Product `
   ADD PRIMARY KEY (`idProduct`),
   ADD UNIQUE KEY `uq_idProduct` (`Name`),
-  ADD KEY `fk_kaup_liik` (`liigi_kood`);
+  ADD KEY `fk_kaup_liik` (`idCategory`);
 
 --
--- Indeksid tabelile `liik`
+-- Indeksid tabelile `Category `
 --
-ALTER TABLE `liik`
-  ADD PRIMARY KEY (`liigi_kood`);
+ALTER TABLE `Category `
+  ADD PRIMARY KEY (`idCategory`);
 
 --
--- Indeksid tabelile `muuk`
+-- Indeksid tabelile `Sale `
 --
-ALTER TABLE `muuk`
-  ADD PRIMARY KEY (`muugi_kood`),
-  ADD KEY `fk_muuk_kaup` (`kauba_kood`),
-  ADD KEY `fk_muuk_customer` (`ostja_kood`);
+ALTER TABLE `Sale `
+  ADD PRIMARY KEY (`idSale `),
+  ADD KEY `fk_muuk_kaup` (`idProduct`),
+  ADD KEY `fk_muuk_customer` (`idCustomer`);
 
 --
 -- AUTO_INCREMENT tõmmistatud tabelitele
@@ -158,10 +158,10 @@ ALTER TABLE `customer`
 --
 
 --
--- Piirangud tabelile `kaup`
+-- Piirangud tabelile `Product `
 --
-ALTER TABLE `kaup`
-  ADD CONSTRAINT `fk_kaup_liik` FOREIGN KEY (`liigi_kood`) REFERENCES `liik` (`liigi_kood`);
+ALTER TABLE `Product `
+  ADD CONSTRAINT `fk_Product_Category` FOREIGN KEY (`idCategory`) REFERENCES `Category` (`idCategory`);
 
 --
 -- Piirangud tabelile `muuk`
