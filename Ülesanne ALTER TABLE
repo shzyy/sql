@@ -32,7 +32,7 @@ CREATE TABLE Muuk (
     kauba_kood INT NOT NULL,
     ostja_kood INT NOT NULL,
     arv INT NOT NULL,
-    kuupaev DATE DEFAULT GETDATE(),
+    kuupaev DATE,
     CONSTRAINT PK_Muuk PRIMARY KEY (muugi_kood),
     CONSTRAINT FK_Muuk_Kaup 
         FOREIGN KEY (kauba_kood) REFERENCES Kaup(kauba_kood),
