@@ -72,7 +72,7 @@ INSERT INTO `Product` (`idProduct`, `name`, `idCategory`, `Price`) VALUES
 -- Tabeli struktuur tabelile `Category`
 --
 
-CREATE TABLE `Category ` (
+CREATE TABLE `Category` (
   `idCategory` int(11) NOT NULL,
   `Category_Name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -101,7 +101,7 @@ CREATE TABLE `Sale ` (
 ) ;
 
 --
--- Andmete tõmmistamine tabelile `muuk`
+-- Andmete tõmmistamine tabelile `Sale`
 --
 
 INSERT INTO `muuk` (`idSale`, `idProduct`, `idCustomer`, `Count_pr`, `Date_of_sale`, `units`) VALUES
@@ -112,17 +112,12 @@ INSERT INTO `muuk` (`idSale`, `idProduct`, `idCustomer`, `Count_pr`, `Date_of_sa
 (5, 654, 2, 5, '2025-14-05', '');
 
 --
--- Indeksid tõmmistatud tabelitele
---
-
---
--- Indeksid tabelile `customer`
 --
 ALTER TABLE `customer`
   ADD PRIMARY KEY (`idCustomer`);
 
 --
--- Indeksid tabelile `Product `
+-- 
 --
 ALTER TABLE `Product `
   ADD PRIMARY KEY (`idProduct`),
@@ -130,7 +125,7 @@ ALTER TABLE `Product `
   ADD KEY `fk_kaup_liik` (`idCategory`);
 
 --
--- Indeksid tabelile `Category `
+-- 
 --
 ALTER TABLE `Category `
   ADD PRIMARY KEY (`idCategory`);
@@ -154,11 +149,11 @@ ALTER TABLE `customer`
   MODIFY `idCustomer` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- Tõmmistatud tabelite piirangud
+-- 
 --
 
 --
--- Piirangud tabelile `Product `
+-- 
 --
 ALTER TABLE `Product `
   ADD CONSTRAINT `fk_Product_Category` FOREIGN KEY (`idCategory`) REFERENCES `Category` (`idCategory`);
