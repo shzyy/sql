@@ -45,21 +45,21 @@ INSERT INTO `customer` (`idCustomer`, `name`, `contact`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabeli struktuur tabelile `kaup`
+-- Tabeli struktuur tabelile `Product`
 --
 
-CREATE TABLE `kaup` (
-  `kauba_kood` int(11) NOT NULL,
-  `nimetus` varchar(255) NOT NULL,
-  `liigi_kood` int(11) NOT NULL,
-  `hind` decimal(10,2) NOT NULL
+CREATE TABLE `Product` (
+  `idProduct` int(11) NOT NULL,
+  `Name` varchar(255) NOT NULL,
+  `idCategory` int(11) NOT NULL,
+  `Price` decimal(10,2) NOT NULL
 ) ;
 
 --
--- Andmete tõmmistamine tabelile `kaup`
+-- Andmete tõmmistamine tabelile `Product`
 --
 
-INSERT INTO `kaup` (`kauba_kood`, `nimetus`, `liigi_kood`, `hind`) VALUES
+INSERT INTO `Product` (`idProduct`, `name`, `idCategory`, `Price`) VALUES
 (331, 'Piim', 1, 1.60),
 (332, 'kohuke', 1, 2.00),
 (333, 'leib', 2, 1.20),
@@ -72,18 +72,16 @@ INSERT INTO `kaup` (`kauba_kood`, `nimetus`, `liigi_kood`, `hind`) VALUES
 -- Tabeli struktuur tabelile `liik`
 --
 
-CREATE TABLE `liik` (
-  `liigi_kood` int(11) NOT NULL,
-  `nimetus` varchar(100) NOT NULL
+CREATE TABLE `Category ` (
+  `idCategory` int(11) NOT NULL,
+  `Category_Name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Andmete tõmmistamine tabelile `liik`
---
 
-INSERT INTO `liik` (`liigi_kood`, `nimetus`) VALUES
-(1, 'Piimatooted'),
-(2, 'Leib ja sai'),
+
+INSERT INTO `Category ` (`idCategory`, `Category_Name`) VALUES
+(1, 'Milk'),
+(2, 'Leib'),
 (3, 'Jook'),
 (4, 'Maiustused');
 
