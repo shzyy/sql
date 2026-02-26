@@ -1,0 +1,57 @@
+CREATE DATABASE ule1
+USE ule1
+
+CREATE TABLE Liik (
+    liigi_kood INT IDENTITY(1,1) NOT NULL,
+    nimetus VARCHAR(30) NOT NULL,
+    CONSTRAINT PK_Liik PRIMARY KEY (liigi_kood),
+    CONSTRAINT UQ_Liik_nimetus UNIQUE (nimetus)
+);
+INSERT INTO Liik(nimetus)
+VALUES ('Toit'),
+('Joogid'),
+('Tehnika');
+CREATE TABLE Kaup (
+    kauba_kood INT IDENTITY(1,1) NOT NULL,
+    nimetus VARCHAR(30) NOT NULL,
+    liigi_kood INT NOT NULL,
+    hind DECIMAL(8,2) NOT NULL,
+    CONSTRAINT PK_Kaup PRIMARY KEY (kauba_kood),
+    CONSTRAINT FK_Kaup_Liik 
+        FOREIGN KEY (liigi_kood) REFERENCES Liik(liigi_kood),
+    CONSTRAINT CHK_Kaup_hind CHECK (hind >= 0)
+);
+INSERT INTO Kaup (nimetus, liigi_kood, hind)
+VALUES ('Leib', '1', '1.20'),
+('Piim', '1', '0.90'),
+('Coca-Cola', '2', '1.50'),
+('Telefon', '3', '600');
+
+CREATE TABLE Muuk (
+    muugi_kood INT IDENTITY(1,1) NOT NULL,
+    kauba_kood INT NOT NULL,
+    ostja_kood INT NOT NULL,
+    arv INT NOT NULL,
+    kuupaev DATE DEFAULT GETDATE(),
+    CONSTRAINT PK_Muuk PRIMARY KEY (muugi_kood),
+    CONSTRAINT FK_Muuk_Kaup 
+        FOREIGN KEY (kauba_kood) REFERENCES Kaup(kauba_kood),
+    CONSTRAINT CHK_Muuk_arv CHECK (arv > 0)
+);
+INSERT INTO Muuk (kauba_kood, ostja_kood, arv, kuupaev)
+VALUES('1', '101', '2', '2024-03-11'),
+('2', '102', '1', '2021-02-03'),
+('3', '103', '5', '2018-01-05'),
+('4', '104', '1', '2021-12-01');
+select * from Liik
+select * from Kaup
+select * from Muuk
+
+ALTER TABLE Kaup
+ALTER COLUMN nimetus VARCHAR(30) NOT NULL;
+
+ALTER TABLE Muuk
+ADD uhik VARCHAR(20) CONSTRAINT DF_Muuk_uhik DEFAULT 'tk';
+
+ALTER TABLE Liik
+DROP CONSTRAINT UQ_Liik_nimetus;
