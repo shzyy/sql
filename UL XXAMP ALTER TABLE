@@ -69,7 +69,7 @@ INSERT INTO `Product` (`idProduct`, `name`, `idCategory`, `Price`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabeli struktuur tabelile `liik`
+-- Tabeli struktuur tabelile `Category`
 --
 
 CREATE TABLE `Category ` (
@@ -88,15 +88,15 @@ INSERT INTO `Category ` (`idCategory`, `Category_Name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabeli struktuur tabelile `muuk`
+-- Tabeli struktuur tabelile `Sale `
 --
 
-CREATE TABLE `muuk` (
-  `muugi_kood` int(11) NOT NULL,
-  `kauba_kood` int(11) NOT NULL,
-  `ostja_kood` int(11) NOT NULL,
-  `arv` int(11) NOT NULL,
-  `kuupaev` date NOT NULL,
+CREATE TABLE `Sale ` (
+  `idSale` int(11) NOT NULL,
+  `idProduct` int(11) NOT NULL,
+  `idCustomer` int(11) NOT NULL,
+  `Count_pr` int(11) NOT NULL,
+  `Date_of_sale` date NOT NULL,
   `units` varchar(20) NOT NULL
 ) ;
 
@@ -104,7 +104,7 @@ CREATE TABLE `muuk` (
 -- Andmete tõmmistamine tabelile `muuk`
 --
 
-INSERT INTO `muuk` (`muugi_kood`, `kauba_kood`, `ostja_kood`, `arv`, `kuupaev`, `units`) VALUES
+INSERT INTO `muuk` (`idSale`, `idProduct`, `idCustomer`, `Count_pr`, `Date_of_sale`, `units`) VALUES
 (1, 345, 1, 2, '2026-02-05', ''),
 (2, 634, 2, 1, '2019-05-03', ''),
 (3, 115, 3, 3, '2020-11-03', ''),
@@ -124,9 +124,9 @@ ALTER TABLE `customer`
 --
 -- Indeksid tabelile `kaup`
 --
-ALTER TABLE `kaup`
-  ADD PRIMARY KEY (`kauba_kood`),
-  ADD UNIQUE KEY `uq_kaup_nimetus` (`nimetus`),
+ALTER TABLE `Product `
+  ADD PRIMARY KEY (`idProduct`),
+  ADD UNIQUE KEY `uq_idProduct` (`Name`),
   ADD KEY `fk_kaup_liik` (`liigi_kood`);
 
 --
