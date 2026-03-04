@@ -1,0 +1,77 @@
+CREATE DATABASE Keys
+USE Keys
+
+CREATE TABLE PK(
+students_id int PRIMARY KEY identity (1,1),
+student_name varchar (30),
+student_lastname varchar (30)
+);
+INSERT INTO PK(student_name, student_lastname)
+VALUES ('Peter', 'Griffin'),
+('Daniel', 'Rockstar'),
+('Heron', 'Water'),
+('Dmitri', 'Saar');
+
+SELECT * from PK
+
+CREATE TABLE FK(
+course_id int PRIMARY KEY identity(1,1),
+course_name varchar(50),
+student_id int,
+FOREIGN KEY (student_id) REFERENCES PK(students_id)
+);
+INSERT INTO FK(course_name, student_id)
+VALUES
+('Mathematics', 1),
+('Programming', 2),
+('Physics', 3),
+('Biology', 4);
+
+SELECT * from FK
+
+CREATE TABLE UQK(
+teacher_id int PRIMARY KEY identity (1,1),
+teacher_name varchar (30),
+teacher_lastname varchar (30),
+teacher_email varchar(100) UNIQUE
+);
+INSERT INTO UQK(teacher_name, teacher_lastname, teacher_email)
+VALUES ('Olga', 'Poskotinova', 'olga.poskotinova@tthk.ee'),
+('Mari', 'Speek', 'mari.speek@tthk.ee'),
+('Anneli', 'Säde', 'anneli.sade@tthk.ee'),
+('Maria ', 'Demtšenko', 'maria.demtsenko@tthk.ee');
+
+SELECT * from UQK
+
+CREATE TABLE SK(
+room_number int PRIMARY KEY,
+building_name varchar(50)
+);
+INSERT INTO SK (room_number, building_name)
+VALUES
+(101, 'Main Building'),
+(202, 'Science Building');
+
+SELECT * FROM SK;
+
+CREATE TABLE CK(
+    course_id int PRIMARY KEY identity(1,1),
+    course_name varchar(50)
+);
+
+INSERT INTO CK(course_name)
+VALUES ('Mathematics'), 
+('Programming'), 
+('Physics');
+
+SELECT * FROM CK;
+
+CREATE TABLE StudentCourses (
+    student_id INT,
+    course_id INT,
+    PRIMARY KEY (student_id, course_id)
+);
+INSERT INTO StudentCourses(student_id,course_id)
+VALUES ('1','451'),
+('2','645');
+SELECT * from StudentCourses
