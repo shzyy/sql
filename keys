@@ -75,3 +75,61 @@ INSERT INTO StudentCourses(student_id,course_id)
 VALUES ('1','451'),
 ('2','645');
 SELECT * from StudentCourses
+
+CREATE TABLE StudentGrades(
+student_id INT,
+course_id INT,
+grade INT,
+PRIMARY KEY (student_id, course_id),
+FOREIGN KEY (student_id) REFERENCES PK(students_id),
+FOREIGN KEY (course_id) REFERENCES CK(course_id)
+);
+
+INSERT INTO StudentGrades(student_id, course_id, grade)
+VALUES
+(1,1,5),
+(2,2,4),
+(3,3,3),
+(4,1,5);
+
+select * from StudentGrades
+
+CREATE TABLE SuperKeyExample(
+student_id INT PRIMARY KEY identity(1,1),
+student_name VARCHAR(30),
+student_lastname VARCHAR(30),
+student_email VARCHAR(100) UNIQUE
+);
+INSERT INTO SuperKeyExample(student_name, student_lastname, student_email)
+VALUES
+('Karl','Tamm','karl.tamm@mail.com'),
+('Mari','Kask','mari.kask@mail.com'),
+('Jaan','Saar','jaan.saar@mail.com');
+select * from SuperKeyExample
+
+CREATE TABLE Users(
+user_id INT PRIMARY KEY identity(1,1),
+username VARCHAR(50) UNIQUE,
+email VARCHAR(100) UNIQUE
+);
+
+INSERT INTO Users(username,email)
+VALUES
+('user1','user1@mail.com'),
+('user2','user2@mail.com'),
+('user3','user3@mail.com');
+
+SELECT * FROM Users;
+
+CREATE TABLE AlternateKeyExample(
+user_id INT PRIMARY KEY identity(1,1),
+username VARCHAR(50) UNIQUE,
+email VARCHAR(100) UNIQUE
+);
+INSERT INTO AlternateKeyExample(username,email)
+VALUES
+('student1','student1@mail.com'),
+('student2','student2@mail.com'),
+('student3','student3@mail.com');
+
+select * from AlternateKeyExample
