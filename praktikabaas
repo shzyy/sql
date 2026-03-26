@@ -1,0 +1,178 @@
+CREATE DATABASE SMSpraktika
+USE SMSpraktika
+CREATE TABLE firma(
+    firmaID INT NOT NULL PRIMARY KEY identity(1,1),
+    firmanimi VARCHAR(20),
+    aadress VARCHAR(20),
+    telefon VARCHAR(20)
+);
+
+CREATE TABLE praktikajuhendaja(
+praktikajuhendajaID int PRIMARY KEY identity(1,1),
+eesnimi VARCHAR(50),
+perekonnanimi VARCHAR(50),
+synniaeg DATE,
+telefon VARCHAR(30)
+);
+
+CREATE TABLE praktikabaas(
+    praktikabaasID INT NOT NULL PRIMARY KEY identity(1,1),
+    firmaID INT,
+    praktikatingimused VARCHAR(20),
+    arvutiprogramm VARCHAR(20),
+    juhendajaID INT,
+    FOREIGN KEY (firmaID) REFERENCES firma(firmaID),
+    FOREIGN KEY (juhendajaID) REFERENCES praktikajuhendaja(praktikajuhendajaID)
+);
+
+INSERT INTO firma(firmanimi,aadress,telefon)
+VALUES('Saku','Tallinna mnt 2','6508400'),
+('Premia','Peterburi tee 42','6033800'),
+('Smartech','Tähesaju tee 11','6477777'),
+('Motonet','Tähesaju tee 14','53682250'),
+('Moto24','Taevakivi tn 1','5042949');
+
+Select * from firma
+
+INSERT INTO praktikajuhendaja(eesnimi,perekonnanimi,synniaeg,telefon)
+VALUES('Anton','Zymak','2010-12-25','6542443'),
+('Matvii','Shevelov','2009-07-14','543625'),
+('Timofei','Stoljarov','2009-11-13','534663'),
+('Maksim','Puhteev','2009-04-13','634632'),
+('Andrey','Stechkin','2009-07-16','6565464');
+
+select * from praktikajuhendaja
+
+INSERT INTO praktikabaas(firmaID, praktikatingimused, arvutiprogramm, juhendajaID)
+VALUES ('1','tehas','SakuApp','1'),
+('2','tehas','PremiaApp','2'),
+('3','Kontor','Smartech','3'),
+('4','Kontor','Motonet','4'),
+('5','Kontor','Moto24','5');
+
+select * from praktikabaas
+
+
+SELECT * FROM firma
+WHERE firmanimi LIKE 'm%';
+
+SELECT *FROM praktikabaas, firma
+WHERE firma.firmaID = praktikabaas.firmaID
+ORDER BY firmanimi;
+
+SELECT firmanimi, COUNT(praktikabaasID) AS kogus
+FROM praktikabaas, firma
+WHERE firma.firmaID = praktikabaas.firmaID
+GROUP BY firmanimi;
+
+SELECT *
+FROM praktikajuhendaja
+WHERE MONTH(synniaeg) = 9 
+   OR MONTH(synniaeg) = 10 
+   OR MONTH(synniaeg) = 11;
+
+ Select * from firma
+ select * from praktikajuhendaja
+ select * from praktikabaas
+
+ SELECT 
+    j.eesnimi,
+    j.perekonnanimi,
+    COUNT(p.praktikabaasID) AS praktikate_arv
+FROM praktikajuhendaja j
+LEFT JOIN praktikabaas p 
+    ON j.praktikajuhendajaID = p.juhendajaID
+GROUP BY j.eesnimi, j.perekonnanimi;
+
+ALTER TABLE praktikajuhendaja
+ADD palk DECIMAL(10,2);
+
+UPDATE praktikajuhendaja
+SET palk = 1200
+WHERE praktikajuhendajaID = 1;
+
+UPDATE praktikajuhendaja
+SET palk = 1300
+WHERE praktikajuhendajaID = 2;
+
+UPDATE praktikajuhendaja
+SET palk = 1250
+WHERE praktikajuhendajaID = 3;
+
+UPDATE praktikajuhendaja
+SET palk = 1400
+WHERE praktikajuhendajaID = 4;
+
+UPDATE praktikajuhendaja
+SET palk = 1500
+WHERE praktikajuhendajaID = 5;
+
+SELECT AVG(palk) AS keskmine_palk
+FROM praktikajuhendaja;
+
+SELECT SUM(palk) AS kogupalk
+FROM praktikajuhendaja;
+
+SELECT 
+    f.firmanimi,
+    p.praktikatingimused
+FROM praktikabaas p
+LEFT JOIN firma f ON p.firmaID = f.firmaID
+WHERE p.praktikatingimused = 'Kontor';
+
+SELECT * FROM praktikajuhendaja
+
+CREATE VIEW firma_praktikate_arv AS
+SELECT f.firmanimi, COUNT(p.praktikabaasID) AS praktikate_arv
+FROM firma f
+LEFT JOIN praktikabaas p ON p.firmaID = f.firmaID
+GROUP BY f.firmanimi;
+
+
+CREATE VIEW sygisel_sundinud_juhendajad AS
+SELECT eesnimi, perekonnanimi, synniaeg, telefon, palk
+FROM praktikajuhendaja
+WHERE MONTH(synniaeg) IN (9, 10, 11);
+
+SELECT * FROM firma_praktikate_arv;
+SELECT * FROM sygisel_sundinud_juhendajad;
+
+CREATE PROCEDURE lisa_uus_firma
+    @firmanimi VARCHAR(50),
+    @aadress VARCHAR(50),
+    @telefon VARCHAR(20)
+AS
+BEGIN
+    INSERT INTO firma (firmanimi, aadress, telefon)
+    VALUES (@firmanimi, @aadress, @telefon);
+END;
+
+EXEC lisa_uus_firma 'TestFirma', 'Testi 1', '1234567';
+
+select * from firma
+
+CREATE PROCEDURE keskmine_palk_juhendajate
+AS
+BEGIN
+    SELECT AVG(palk) AS keskmine_palk
+    FROM praktikajuhendaja;
+END;
+
+EXEC keskmine_palk_juhendajate;
+
+CREATE PROCEDURE kustuta_firma
+    @firmanimi VARCHAR(50)
+AS
+BEGIN
+    DELETE FROM firma
+    WHERE firmanimi = @firmanimi;
+END;
+
+EXEC kustuta_firma 'TestFirma';
+
+select * from firma 
+
+CREATE function fnComputeAge(@DOB datetime)
+return nvarchar(50),
+as begin,
+declare
